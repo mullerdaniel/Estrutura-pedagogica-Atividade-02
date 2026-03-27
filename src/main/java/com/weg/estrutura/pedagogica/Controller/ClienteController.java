@@ -3,6 +3,9 @@ package com.weg.estrutura.pedagogica.Controller;
 import com.weg.estrutura.pedagogica.Dto.Requisicao.ClienteRequisicaoDto;
 import com.weg.estrutura.pedagogica.Dto.Resposta.ClienteRespostaDto;
 import com.weg.estrutura.pedagogica.Service.ClienteService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,27 +21,29 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ClienteRespostaDto salvar(@RequestBody ClienteRequisicaoDto dto) {
-        return clienteService.salvar(dto);
+    public ResponseEntity<ClienteRespostaDto> salvar(@RequestBody ClienteRequisicaoDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(clienteService.salvar(dto));
     }
 
     @GetMapping
-    public List<ClienteRespostaDto> listar() {
-        return clienteService.listar();
+    public ResponseEntity<List<ClienteRespostaDto>> listar() {
+        return ResponseEntity.ok(clienteService.listar());
     }
 
     @GetMapping("/{id}")
-    public ClienteRespostaDto buscarPorId(@PathVariable Long id) {
-        return clienteService.buscarPorId(id);
+    public ResponseEntity<ClienteRespostaDto> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(clienteService.buscarPorId(id));
     }
 
     @GetMapping("/nome")
-    public List<ClienteRespostaDto> buscarPorNome(@RequestParam String nome) {
-        return clienteService.buscarPorNome(nome);
+    public ResponseEntity<List<ClienteRespostaDto>> buscarPorNome(@RequestParam String nome) {
+        return ResponseEntity.ok(clienteService.buscarPorNome(nome));
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
         clienteService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }
